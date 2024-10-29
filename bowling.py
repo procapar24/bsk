@@ -19,21 +19,30 @@ class BowlingGame:
             raise BowlingError
         return self._frames[i]
 
+    def get_next_throw(self, i: int):
+        last_frame = len(self._frames) - 1
+        if i == last_frame:
+            return self._first_bonus_throw
+        else:
+            return self.get_frame_at(i + 1).get_first_throw()
+
+    def get_next_two_throws(self, i: int):
+        last_frame = len(self._frames) - 1
+        if i == last_frame:
+            return self._first_bonus_throw + self._second_bonus_throw
+        elif self.get_frame_at(i + 1).is_strike():
+            return 10 + self.get_next_throw(i + 1)
+        else:
+            return self.get_frame_at(i + 1).get_first_throw() + self.get_frame_at(i + 1).get_second_throw()
+
     def calculate_score(self) -> int:
         last_frame = len(self._frames) - 1
         score = 0
         for i, frame in enumerate(self._frames):
             if frame.is_spare():
-                if i == last_frame:
-                    frame.set_bonus(self._first_bonus_throw)
-                else:
-                    frame.set_bonus(self.get_frame_at(i + 1).get_first_throw())
-
+                frame.set_bonus(self.get_next_throw(i))
             if frame.is_strike():
-                if i == last_frame:
-                    frame.set_bonus(self._first_bonus_throw + self._second_bonus_throw)
-                else:
-                    frame.set_bonus(self.get_frame_at(i + 1).get_first_throw() + self.get_frame_at(i + 1).get_second_throw())
+                frame.set_bonus(self.get_next_two_throws(i))
 
             score += frame.score()
         return score
