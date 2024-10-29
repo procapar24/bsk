@@ -20,8 +20,15 @@ class BowlingGame:
         return self._frames[i]
 
     def calculate_score(self) -> int:
+        last_frame = len(self._frames) - 1
         score = 0
-        for frame in self._frames:
+        for i, frame in enumerate(self._frames):
+            if frame.is_spare():
+                if i == last_frame:
+                    frame.set_bonus(self._first_bonus_throw)
+                else:
+                    frame.set_bonus(self.get_frame_at(i + 1).get_first_throw())
+
             score += frame.score()
         return score
 
