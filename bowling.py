@@ -5,13 +5,19 @@ from frame import Frame
 class BowlingGame:
 
     def __init__(self):
-        pass
+        self._frames = []
+        self._first_bonus_throw = 0
+        self._second_bonus_throw = 0
     
     def add_frame(self, frame: Frame) -> None:
-        pass
+        if len(self._frames) > 9:
+            raise BowlingError
+        self._frames.append(frame)
 
     def get_frame_at(self, i: int) -> Frame:
-        pass
+        if i < 0 or i >= len(self._frames):
+            raise BowlingError
+        return self._frames[i]
 
     def calculate_score(self) -> int:
         pass
