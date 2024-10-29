@@ -48,7 +48,11 @@ class BowlingGame:
         return score
 
     def set_first_bonus_throw(self, bonus_throw: int) -> None:
-        pass
+        if bonus_throw < 0 or bonus_throw > 10:
+            raise BowlingError
+        self._first_bonus_throw = bonus_throw
 
     def set_second_bonus_throw(self, bonus_throw: int) -> None:
-        pass
+        if bonus_throw < 0 or bonus_throw > 10:
+            raise BowlingError
+        self._second_bonus_throw = bonus_throw
